@@ -5,12 +5,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>BareboneAvaloniaApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.0" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RpnCalc.Core\RpnCalc.Core.csproj" />
+    <ProjectReference Include="..\RpnCalc.Logic\RpnCalc.Logic.csproj" />
   </ItemGroup>
 
 </Project>
