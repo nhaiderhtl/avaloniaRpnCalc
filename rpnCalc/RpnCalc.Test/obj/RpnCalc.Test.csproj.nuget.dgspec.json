@@ -1,0 +1,289 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Test\\RpnCalc.Test.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\RpnCalc.App.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\RpnCalc.App.csproj",
+        "projectName": "RpnCalc.App",
+        "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\RpnCalc.App.csproj",
+        "packagesPath": "C:\\Users\\nicoh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\nicoh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj": {
+                "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj"
+              },
+              "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj": {
+                "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Avalonia": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "Avalonia.Themes.Fluent": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj",
+        "projectName": "RpnCalc.Core",
+        "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj",
+        "packagesPath": "C:\\Users\\nicoh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\nicoh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj",
+        "projectName": "RpnCalc.Logic",
+        "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj",
+        "packagesPath": "C:\\Users\\nicoh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\nicoh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Test\\RpnCalc.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Test\\RpnCalc.Test.csproj",
+        "projectName": "RpnCalc.Test",
+        "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Test\\RpnCalc.Test.csproj",
+        "packagesPath": "C:\\Users\\nicoh\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\nicoh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\RpnCalc.App.csproj": {
+                "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.App\\RpnCalc.App.csproj"
+              },
+              "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj": {
+                "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Core\\RpnCalc.Core.csproj"
+              },
+              "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj": {
+                "projectPath": "C:\\Users\\nicoh\\Desktop\\avaloniarpncalc-nhaiderhtl\\rpnCalc\\RpnCalc.Logic\\RpnCalc.Logic.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.8.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.5.3, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.5.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.408/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
