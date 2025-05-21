@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 
@@ -12,7 +13,7 @@ public class Keypad : UserControl
         var grid = new Grid
         {
             RowDefinitions = new RowDefinitions("*,*,*,*,*"),
-            ColumnDefinitions = new ColumnDefinitions("*,*,*,*"),
+            ColumnDefinitions = new ColumnDefinitions("*,*,*,*")
         };
 
         string[,] labels =
@@ -32,6 +33,8 @@ public class Keypad : UserControl
                 if (string.IsNullOrEmpty(text))
                     continue;
 
+                bool isOp = text is "/" or "*" or "-" or "+";
+
                 var button = new Button
                 {
                     Content = text,
@@ -41,20 +44,21 @@ public class Keypad : UserControl
                     Margin = new Thickness(5),
                     HorizontalContentAlignment = HorizontalAlignment.Center,
                     VerticalContentAlignment = VerticalAlignment.Center,
-                    Background = new SolidColorBrush(Color.Parse("#A0C4FF")),
-                    BorderBrush = Brushes.Transparent,
+                    Background = isOp ? Brushes.Orange : Brushes.DarkGray,
+                    BorderBrush = Brushes.DimGray,
+                    BorderThickness = new Thickness(0, 0, 2, 2),
                     RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                     RenderTransform = new ScaleTransform(1, 1)
                 };
 
                 button.PointerEntered += (_, __) =>
                 {
-                    button.Background = new SolidColorBrush(Color.Parse("#6699CC"));
+                    button.Background = isOp ? Brushes.DarkOrange : Brushes.Gray;
                     button.RenderTransform = new ScaleTransform(1.1, 1.1);
                 };
                 button.PointerExited += (_, __) =>
                 {
-                    button.Background = new SolidColorBrush(Color.Parse("#A0C4FF"));
+                    button.Background = isOp ? Brushes.Orange : Brushes.DarkGray;
                     button.RenderTransform = new ScaleTransform(1, 1);
                 };
 

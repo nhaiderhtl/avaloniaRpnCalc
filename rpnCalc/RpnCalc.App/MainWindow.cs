@@ -14,7 +14,7 @@ public class MainWindow : Window
         Title = "RPN Calculator UI";
         Width = 300;
         Height = 450;
-        Background = Brushes.WhiteSmoke;
+        Background = Brushes.Black;
         CanResize = false;
 
         var mainPanel = new StackPanel

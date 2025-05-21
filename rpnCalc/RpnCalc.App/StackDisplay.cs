@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -15,7 +16,7 @@ public class StackDisplay : UserControl
 
         var header = new Border
         {
-            Background = Brushes.WhiteSmoke,
+            Background = Brushes.DimGray,
             BorderThickness = new Thickness(0, 0, 0, 1),
             BorderBrush = Brushes.Black,
             Margin = new Thickness(0, 0, 0, 7),
@@ -32,7 +33,8 @@ public class StackDisplay : UserControl
 
         var panel = new StackPanel
         {
-            Spacing = 5
+            Spacing = 5,
+            Background = Brushes.DimGray,
         };
         panel.Children.Add(header);
 
