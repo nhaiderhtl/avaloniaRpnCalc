@@ -10,47 +10,60 @@ public class MainWindow : Window
         Title = "RPN Calculator UI";
         Width = 300;
         Height = 450;
-        Background = Brushes.White;
+        Background = Brushes.WhiteSmoke;
 
         var mainPanel = new StackPanel
         {
             Orientation = Orientation.Vertical,
-            Margin      = new Thickness(10),
-            Spacing     = 10
+            Margin = new Thickness(10),
+            Spacing = 10
         };
+
+        var header = new Border
+        {
+            Background = Brushes.WhiteSmoke,
+            BorderThickness = new Thickness(0, 0, 0, 1),
+            BorderBrush = Brushes.Black,
+            Margin = new Thickness(0, 0, 0, 7),
+            Child = new TextBlock
+            {
+                Text = "Display (Top of Stack at Bottom)",
+                FontWeight = FontWeight.Bold,
+                FontFamily = new FontFamily("Consolas"),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(1)
+            }
+        };
+
+        var stackPanel = new StackPanel();
+        stackPanel.Children.Add(header);
+
+        for (var line = 5; line >= 1; line--)
+        {
+            stackPanel.Children.Add(new TextBlock
+            {
+                Text = $"Line {line}:",
+                FontFamily = new FontFamily("Consolas"),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 10),
+                FontWeight = FontWeight.Bold
+            });
+        }
 
         var displayBorder = new Border
         {
-            BorderBrush     = Brushes.Black,
-            BorderThickness = new Thickness(1),
-            Padding         = new Thickness(5),
-            Child = new StackPanel
-            {
-                Spacing = 5,
-                Children =
-                {
-                    new TextBlock
-                    {
-                        Text                = "Display (Top of Stack at Bottom)",
-                        FontWeight          = FontWeight.Bold,
-                        FontFamily          = new FontFamily("Consolas"),
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        Margin              = new Thickness(0,0,0,5)
-                    },
-                    new TextBlock { Text = "Line 5:", FontFamily = new FontFamily("Consolas"), HorizontalAlignment = HorizontalAlignment.Center },
-                    new TextBlock { Text = "Line 4:", FontFamily = new FontFamily("Consolas"), HorizontalAlignment = HorizontalAlignment.Center },
-                    new TextBlock { Text = "Line 3:", FontFamily = new FontFamily("Consolas"), HorizontalAlignment = HorizontalAlignment.Center },
-                    new TextBlock { Text = "Line 2:", FontFamily = new FontFamily("Consolas"), HorizontalAlignment = HorizontalAlignment.Center },
-                    new TextBlock { Text = "Line 1:", FontFamily = new FontFamily("Consolas"), HorizontalAlignment = HorizontalAlignment.Center }
-                }
-            }
+            BorderBrush = Brushes.Black,
+            BorderThickness = new Thickness(2),
+            Child = stackPanel,
+            Height = 150
         };
-        displayBorder.Height = 200;
+
         mainPanel.Children.Add(displayBorder);
 
         var grid = new Grid
         {
-            RowDefinitions    = new RowDefinitions("*,*,*,*,*"),
+            RowDefinitions = new RowDefinitions("*,*,*,*,*"),
             ColumnDefinitions = new ColumnDefinitions("*,*,*,*")
         };
 
@@ -64,30 +77,44 @@ public class MainWindow : Window
         };
 
         for (int row = 0; row < 5; row++)
+        {
             for (int col = 0; col < 4; col++)
             {
-                var cell = new Border
-                {
-                    BorderBrush     = Brushes.Black,
-                    BorderThickness = new Thickness(0.5)
-                };
                 var text = labels[row, col];
-                if (!string.IsNullOrEmpty(text))
-                    cell.Child = new Button
-                    {
-                        Content                   = text,
-                        FontFamily                = new FontFamily("Consolas"),
-                        MinHeight                 = 40,
-                        BorderBrush = Brushes.Black,
-                        Padding = new Thickness(5),
-                        HorizontalContentAlignment = HorizontalAlignment.Center,
-                        VerticalContentAlignment   = VerticalAlignment.Center
-                    };
-                Grid.SetRow(cell, row);
-                Grid.SetColumn(cell, col);
-                grid.Children.Add(cell);
+                if (string.IsNullOrEmpty(text))
+                    continue;
+
+                var button = new Button
+                {
+                    Content = text,
+                    FontFamily = new FontFamily("Consolas"),
+                    MinHeight = 40,
+                    Padding = new Thickness(5),
+                    HorizontalContentAlignment = HorizontalAlignment.Center,
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    Background = new SolidColorBrush(Color.Parse("#A0C4FF")),
+                    BorderBrush = Brushes.Transparent,
+                    RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
+                    RenderTransform = new ScaleTransform(1, 1)
+                };
+
+                button.PointerEntered += (s, e) =>
+                {
+                    button.Background = new SolidColorBrush(Color.Parse("#6699CC"));
+                    button.RenderTransform = new ScaleTransform(1.1, 1.1);
+                };
+                button.PointerExited += (s, e) =>
+                {
+                    button.Background = new SolidColorBrush(Color.Parse("#A0C4FF"));
+                    button.RenderTransform = new ScaleTransform(1, 1);
+                };
+
+                Grid.SetRow(button, row);
+                Grid.SetColumn(button, col);
+                grid.Children.Add(button);
             }
-        //test commit
+        }
+
         mainPanel.Children.Add(grid);
         Content = mainPanel;
     }
