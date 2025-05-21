@@ -24,7 +24,6 @@ public class MainWindow : Window
         };
 
         mainPanel.Children.Add(_display);
-
         mainPanel.Children.Add(_keypad);
         Content = mainPanel;
     }
