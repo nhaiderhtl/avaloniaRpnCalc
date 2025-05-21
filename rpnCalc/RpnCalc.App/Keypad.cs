@@ -12,7 +12,7 @@ public class Keypad : UserControl
         var grid = new Grid
         {
             RowDefinitions = new RowDefinitions("*,*,*,*,*"),
-            ColumnDefinitions = new ColumnDefinitions("*,*,*,*")
+            ColumnDefinitions = new ColumnDefinitions("*,*,*,*"),
         };
 
         string[,] labels =
@@ -38,6 +38,7 @@ public class Keypad : UserControl
                     FontFamily = new FontFamily("Consolas"),
                     MinHeight = 40,
                     Padding = new Thickness(5),
+                    Margin = new Thickness(5),
                     HorizontalContentAlignment = HorizontalAlignment.Center,
                     VerticalContentAlignment = VerticalAlignment.Center,
                     Background = new SolidColorBrush(Color.Parse("#A0C4FF")),

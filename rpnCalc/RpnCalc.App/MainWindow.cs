@@ -15,6 +15,7 @@ public class MainWindow : Window
         Width = 300;
         Height = 450;
         Background = Brushes.WhiteSmoke;
+        CanResize = false;
 
         var mainPanel = new StackPanel
         {
