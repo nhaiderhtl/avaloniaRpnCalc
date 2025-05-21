@@ -2,9 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using BareboneAvaloniaApp;
 
 public class MainWindow : Window
 {
+    private readonly StackDisplay _display = new();
     public MainWindow()
     {
         Title = "RPN Calculator UI";
@@ -19,47 +21,11 @@ public class MainWindow : Window
             Spacing = 10
         };
 
-        var header = new Border
-        {
-            Background = Brushes.WhiteSmoke,
-            BorderThickness = new Thickness(0, 0, 0, 1),
-            BorderBrush = Brushes.Black,
-            Margin = new Thickness(0, 0, 0, 7),
-            Child = new TextBlock
-            {
-                Text = "Display (Top of Stack at Bottom)",
-                FontWeight = FontWeight.Bold,
-                FontFamily = new FontFamily("Consolas"),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(1)
-            }
-        };
 
-        var stackPanel = new StackPanel();
-        stackPanel.Children.Add(header);
+        //mainPanel.Children.Add(displayBorder);
 
-        for (var line = 5; line >= 1; line--)
-        {
-            stackPanel.Children.Add(new TextBlock
-            {
-                Text = $"Line {line}:",
-                FontFamily = new FontFamily("Consolas"),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(0, 0, 0, 10),
-                FontWeight = FontWeight.Bold
-            });
-        }
 
-        var displayBorder = new Border
-        {
-            BorderBrush = Brushes.Black,
-            BorderThickness = new Thickness(2),
-            Child = stackPanel,
-            Height = 150
-        };
-
-        mainPanel.Children.Add(displayBorder);
+        mainPanel.Children.Add(_display);
 
         var grid = new Grid
         {
