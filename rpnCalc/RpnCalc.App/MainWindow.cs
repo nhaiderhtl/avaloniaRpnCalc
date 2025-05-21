@@ -78,6 +78,8 @@ public class MainWindow : Window
                         Content                   = text,
                         FontFamily                = new FontFamily("Consolas"),
                         MinHeight                 = 40,
+                        BorderBrush = Brushes.Black,
+                        Padding = new Thickness(5),
                         HorizontalContentAlignment = HorizontalAlignment.Center,
                         VerticalContentAlignment   = VerticalAlignment.Center
                     };
