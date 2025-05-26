@@ -7,12 +7,12 @@ namespace RpnCalc.Core;
 
 public class StackDisplay : UserControl
 {
-    private readonly TextBlock[] _lines;
-    private TextBlock _inputLine;
+    public TextBlock[] ValueLines;
+    public TextBlock InputLine;
 
     public StackDisplay()
     {
-        _lines = new TextBlock[5];
+        ValueLines = new TextBlock[5];
 
         var header = new Border
         {
@@ -40,28 +40,44 @@ public class StackDisplay : UserControl
 
         for (int i = 5; i > 0; i--)
         {
-            var lineBlock = new TextBlock
+            var rowPanel = new StackPanel
             {
-                Text = $"Line {i}:",
-                FontFamily = new FontFamily("Consolas"),
+                Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 10),
-                FontWeight = FontWeight.Bold
             };
-            _lines[^i] = lineBlock;
-            panel.Children.Add(lineBlock);
+
+            // 1) Label-Block (stays the same)
+            var labelBlock = new TextBlock
+            {
+                Text = $"Line {i}: ",
+                FontFamily = new FontFamily("Consolas"),
+                FontWeight = FontWeight.Bold,
+            };
+
+            // 2) Value-Block (empty, gets value later)
+            var valueBlock = new TextBlock
+            {
+                Text = string.Empty,
+                FontFamily = new FontFamily("Consolas"),
+            };
+            ValueLines[^i] = valueBlock;
+
+            rowPanel.Children.Add(labelBlock);
+            rowPanel.Children.Add(valueBlock);
+            panel.Children.Add(rowPanel);
         }
 
         var inputLine = new TextBlock
         {
-            Text = $"Input: ",
+            Text = "Input: ",
             FontFamily = new FontFamily("Consolas"),
             HorizontalAlignment = HorizontalAlignment.Center,
             Margin = new Thickness(0, 0, 0, 10),
             FontWeight = FontWeight.Bold,
         };
         panel.Children.Add(inputLine);
-        _inputLine = inputLine;
+        InputLine = inputLine;
 
         Content = new Border
         {
@@ -74,6 +90,11 @@ public class StackDisplay : UserControl
 
     public void SetInput(string input)
     {
-        _inputLine.Text = "Input: " + input;
+        InputLine.Text += input;
+    }
+
+    public void SetLine(int index, string text)
+    {
+        ValueLines[index].Text = text;
     }
 }
