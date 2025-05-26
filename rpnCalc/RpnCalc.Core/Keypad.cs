@@ -1,13 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace BareboneAvaloniaApp;
+namespace RpnCalc.Core;
 
 public class Keypad : UserControl
 {
+    public event Action<string>? ButtonClicked;
+
     public Keypad()
     {
         var grid = new Grid
@@ -61,6 +62,9 @@ public class Keypad : UserControl
                     button.Background = isOp ? Brushes.Orange : Brushes.DarkGray;
                     button.RenderTransform = new ScaleTransform(1, 1);
                 };
+
+                button.Click += (_, __) => { ButtonClicked?.Invoke(text); };
+
 
                 Grid.SetRow(button, row);
                 Grid.SetColumn(button, col);
