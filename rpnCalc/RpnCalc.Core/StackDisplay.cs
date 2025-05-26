@@ -90,7 +90,7 @@ public class StackDisplay : UserControl
 
     public void SetInput(string input)
     {
-        InputLine.Text += input;
+        InputLine.Text = "Input: " + input;
     }
 
     public void SetLine(int index, string text)

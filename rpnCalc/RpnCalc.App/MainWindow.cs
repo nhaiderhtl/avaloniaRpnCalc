@@ -37,7 +37,7 @@ public class MainWindow : Window
 
     private void OnKeypadButtonClicked(string label)
     {
-        if (double.TryParse(label, NumberStyles.None, CultureInfo.InvariantCulture, out _))
+        if (label.Length == 1 && char.IsDigit(label[0]))
         {
             _currentInput += label;
             _display.SetInput(_currentInput);
@@ -52,57 +52,47 @@ public class MainWindow : Window
                 _currentInput = "";
                 _display.SetInput("");
                 break;
-
             case "Clear":
                 _stack.Clear();
                 _currentInput = "";
                 _display.SetInput("");
                 break;
-
             case "+":
-                if (_stack.Count >= 2)
-                {
-                    var b = _stack.Pop();
-                    var a = _stack.Pop();
-                    _stack.Push(a + b);
-                }
-
-                break;
-
             case "-":
                 if (_stack.Count >= 2)
                 {
                     var b = _stack.Pop();
                     var a = _stack.Pop();
-                    _stack.Push(a - b);
+                    var result = label == "+" ? a + b : a - b;
+                    _stack.Push(result);
                 }
 
                 break;
-
             case "Swap":
                 if (_stack.Count >= 2)
                 {
-                    var top = _stack.Pop();
+                    var first = _stack.Pop();
                     var second = _stack.Pop();
-                    _stack.Push(top);
+                    _stack.Push(first);
                     _stack.Push(second);
                 }
 
                 break;
         }
 
-        RefreshDisplayLines();
+        RefreshDisplay();
     }
 
-    private void RefreshDisplayLines()
+    private void RefreshDisplay()
     {
         var items = _stack.ToArray();
         for (int i = 0; i < 5; i++)
         {
+            int displayIndex = 4 - i;
             if (i < items.Length)
-                _display.SetLine(i, items[i].ToString(CultureInfo.InvariantCulture));
+                _display.SetLine(displayIndex, items[i].ToString(CultureInfo.InvariantCulture));
             else
-                _display.SetLine(i, "");
+                _display.SetLine(displayIndex, "");
         }
     }
 }
