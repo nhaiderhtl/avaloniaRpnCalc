@@ -86,7 +86,7 @@ public class MainWindow : Window
                     break;
             }
         }
-        catch (Exception e)
+        catch (RpnException e)
         {
             _currentInput = e.Message;
             _display.SetInput(_currentInput);

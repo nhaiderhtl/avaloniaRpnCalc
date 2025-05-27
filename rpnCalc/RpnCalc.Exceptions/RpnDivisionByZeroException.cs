@@ -1,6 +1,6 @@
 namespace RpnCalc.Exceptions;
 
-public class RpnDivisionByZeroException : Exception
+public class RpnDivisionByZeroException : RpnException
 {
     public RpnDivisionByZeroException() : base("Division by zero")
     {
