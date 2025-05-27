@@ -10,4 +10,8 @@
       <PackageReference Include="Avalonia" Version="11.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RpnCalc.Exceptions\RpnCalc.Exceptions.csproj" />
+    </ItemGroup>
+
 </Project>

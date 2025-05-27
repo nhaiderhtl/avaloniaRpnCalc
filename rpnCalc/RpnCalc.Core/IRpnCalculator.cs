@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-
-//using RpnCalc.Exceptions;
-
 namespace RpnCalc.Core
 {
     /// <summary>

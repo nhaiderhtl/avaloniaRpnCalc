@@ -37,6 +37,7 @@ public class MainWindow : Window
 
     private void OnKeypadButtonClicked(string label)
     {
+        //TODO: catch exception from logic
         if (label.Length == 1 && char.IsDigit(label[0]))
         {
             _currentInput += label;

@@ -1,53 +1,97 @@
 using RpnCalc.Core;
+using RpnCalc.Exceptions;
 
 namespace RpnCalc.Logic;
 
 public class RpnBaseFunctionality : IRpnCalculator
 {
-    public IReadOnlyCollection<double> Stack { get; }
+    public IReadOnlyCollection<double> Stack => _stack;
+    private Stack<double> _stack;
 
     public void Push(double value)
     {
-        throw new NotImplementedException();
+        _stack.Push(value);
     }
 
     public double Pop()
     {
-        throw new NotImplementedException();
+        if (_stack.Count == 0)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        return _stack.Pop();
     }
 
     public void Add()
     {
-        throw new NotImplementedException();
+        if (_stack.Count < 2)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        var a = _stack.Pop();
+        var b = _stack.Pop();
+        _stack.Push(a + b);
     }
 
     public void Subtract()
     {
-        throw new NotImplementedException();
+        if (_stack.Count < 2)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        var a = _stack.Pop();
+        var b = _stack.Pop();
+        _stack.Push(a - b);
     }
 
     public void Multiply()
     {
-        throw new NotImplementedException();
+        if (_stack.Count < 2)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        var a = _stack.Pop();
+        var b = _stack.Pop();
+        _stack.Push(a * b);
     }
 
     public void Divide()
     {
-        throw new NotImplementedException();
+        if (_stack.Count < 2)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        var a = _stack.Pop();
+        var b = _stack.Pop();
+        if (b == 0) throw new RpnDivisionByZeroException();
+        _stack.Push(a / b);
     }
 
     public void Swap()
     {
-        throw new NotImplementedException();
+        if (_stack.Count < 2)
+        {
+            throw new RpnStackUnderflowException();
+        }
+
+        var a = _stack.Pop();
+        var b = _stack.Pop();
+        _stack.Push(a);
+        _stack.Push(b);
     }
 
     public void Clear()
     {
-        throw new NotImplementedException();
+        _stack.Clear();
     }
 
     public double[] GetStackSnapshot()
     {
-        throw new NotImplementedException();
+        return _stack.ToArray();
     }
 }
