@@ -1,17 +1,19 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using RpnCalc.Core;
+using RpnCalc.Logic;
+
+namespace BareboneAvaloniaApp;
 
 public class MainWindow : Window
 {
     private readonly StackDisplay _display = new();
     private readonly Keypad _keypad = new();
-    private readonly Stack<double> _stack = new();
     private string _currentInput = "";
+    private readonly RpnBaseFunctionality _functionality = new();
 
     public MainWindow()
     {
@@ -45,40 +47,43 @@ public class MainWindow : Window
             return;
         }
 
-        switch (label)
+        try
         {
-            case "Enter":
-                if (double.TryParse(_currentInput, NumberStyles.Number, CultureInfo.InvariantCulture, out var val))
-                    _stack.Push(val);
-                _currentInput = "";
-                _display.SetInput("");
-                break;
-            case "Clear":
-                _stack.Clear();
-                _currentInput = "";
-                _display.SetInput("");
-                break;
-            case "+":
-            case "-":
-                if (_stack.Count >= 2)
-                {
-                    var b = _stack.Pop();
-                    var a = _stack.Pop();
-                    var result = label == "+" ? a + b : a - b;
-                    _stack.Push(result);
-                }
+            switch (label)
+            {
+                case "Enter":
+                    if (double.TryParse(_currentInput, NumberStyles.Number, CultureInfo.InvariantCulture, out var val))
+                        _functionality.Push(val);
+                    _currentInput = "";
+                    _display.SetInput("");
+                    break;
+                case "Clear":
+                    _functionality.Clear();
+                    _currentInput = "";
+                    _display.SetInput("");
+                    break;
+                case "+":
+                    _functionality.Add();
+                    break;
+                case "-":
+                    _functionality.Subtract();
+                    break;
+                case "Swap":
+                    if (_functionality.Stack.Count >= 2)
+                    {
+                        var first = _functionality.Pop();
+                        var second = _functionality.Pop();
+                        _functionality.Push(first);
+                        _functionality.Push(second);
+                    }
 
-                break;
-            case "Swap":
-                if (_stack.Count >= 2)
-                {
-                    var first = _stack.Pop();
-                    var second = _stack.Pop();
-                    _stack.Push(first);
-                    _stack.Push(second);
-                }
-
-                break;
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            _currentInput = e.Message;
+            _display.SetInput(_currentInput);
         }
 
         RefreshDisplay();
@@ -86,7 +91,7 @@ public class MainWindow : Window
 
     private void RefreshDisplay()
     {
-        var items = _stack.ToArray();
+        var items = _functionality.GetStackSnapshot();
         for (int i = 0; i < 5; i++)
         {
             int displayIndex = 4 - i;
