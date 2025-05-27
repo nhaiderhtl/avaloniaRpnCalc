@@ -6,7 +6,7 @@ namespace RpnCalc.Logic;
 public class RpnBaseFunctionality : IRpnCalculator
 {
     public IReadOnlyCollection<double> Stack => _stack;
-    private Stack<double> _stack;
+    private Stack<double> _stack = new Stack<double>();
 
     public void Push(double value)
     {

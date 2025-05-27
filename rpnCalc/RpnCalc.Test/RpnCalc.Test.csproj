@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RpnCalc.App\RpnCalc.App.csproj" />
+      <ProjectReference Include="..\RpnCalcApp\RpnCalcApp.csproj" />
       <ProjectReference Include="..\RpnCalc.Core\RpnCalc.Core.csproj" />
       <ProjectReference Include="..\RpnCalc.Logic\RpnCalc.Logic.csproj" />
     </ItemGroup>
