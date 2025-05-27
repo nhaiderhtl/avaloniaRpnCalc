@@ -89,10 +89,7 @@ public class MainWindow : Window
         for (int i = 0; i < 5; i++)
         {
             int displayIndex = 4 - i;
-            if (i < items.Length)
-                _display.SetLine(displayIndex, items[i].ToString(CultureInfo.InvariantCulture));
-            else
-                _display.SetLine(displayIndex, "");
+            _display.SetLine(displayIndex, i < items.Length ? items[i].ToString(CultureInfo.InvariantCulture) : "");
         }
     }
 }

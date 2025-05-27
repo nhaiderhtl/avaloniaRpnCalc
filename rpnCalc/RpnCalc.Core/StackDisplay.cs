@@ -7,12 +7,12 @@ namespace RpnCalc.Core;
 
 public class StackDisplay : UserControl
 {
-    public TextBlock[] ValueLines;
-    public TextBlock InputLine;
+    private readonly TextBlock[] _valueLines;
+    private readonly TextBlock _inputLine;
 
     public StackDisplay()
     {
-        ValueLines = new TextBlock[5];
+        _valueLines = new TextBlock[5];
 
         var header = new Border
         {
@@ -61,7 +61,7 @@ public class StackDisplay : UserControl
                 Text = string.Empty,
                 FontFamily = new FontFamily("Consolas"),
             };
-            ValueLines[^i] = valueBlock;
+            _valueLines[^i] = valueBlock;
 
             rowPanel.Children.Add(labelBlock);
             rowPanel.Children.Add(valueBlock);
@@ -77,7 +77,7 @@ public class StackDisplay : UserControl
             FontWeight = FontWeight.Bold,
         };
         panel.Children.Add(inputLine);
-        InputLine = inputLine;
+        _inputLine = inputLine;
 
         Content = new Border
         {
@@ -90,11 +90,11 @@ public class StackDisplay : UserControl
 
     public void SetInput(string input)
     {
-        InputLine.Text = "Input: " + input;
+        _inputLine.Text = "Input: " + input;
     }
 
     public void SetLine(int index, string text)
     {
-        ValueLines[index].Text = text;
+        _valueLines[index].Text = text;
     }
 }
