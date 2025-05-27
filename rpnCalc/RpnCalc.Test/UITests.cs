@@ -2,7 +2,7 @@ using Xunit;
 
 namespace RpnCalc.Tests;
 
-public class UnitTest1
+public class UITests
 {
     [Fact]
     public void Test1()
