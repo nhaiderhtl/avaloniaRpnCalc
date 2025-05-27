@@ -42,8 +42,8 @@ public class RpnBaseFunctionality : IRpnCalculator
             throw new RpnStackUnderflowException();
         }
 
-        var a = _stack.Pop();
         var b = _stack.Pop();
+        var a = _stack.Pop();
         _stack.Push(a - b);
     }
 
@@ -54,8 +54,8 @@ public class RpnBaseFunctionality : IRpnCalculator
             throw new RpnStackUnderflowException();
         }
 
-        var a = _stack.Pop();
         var b = _stack.Pop();
+        var a = _stack.Pop();
         _stack.Push(a * b);
     }
 
@@ -66,8 +66,8 @@ public class RpnBaseFunctionality : IRpnCalculator
             throw new RpnStackUnderflowException();
         }
 
-        var a = _stack.Pop();
         var b = _stack.Pop();
+        var a = _stack.Pop();
         if (b == 0) throw new RpnDivisionByZeroException();
         _stack.Push(a / b);
     }

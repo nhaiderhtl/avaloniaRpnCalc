@@ -39,8 +39,7 @@ public class MainWindow : Window
 
     private void OnKeypadButtonClicked(string label)
     {
-        //TODO: catch exception from logic
-        if (label.Length == 1 && char.IsDigit(label[0]))
+        if (label.Length == 1 && (char.IsDigit(label[0]) || label[0] == '.'))
         {
             _currentInput += label;
             _display.SetInput(_currentInput);
@@ -67,6 +66,12 @@ public class MainWindow : Window
                     break;
                 case "-":
                     _functionality.Subtract();
+                    break;
+                case "*":
+                    _functionality.Multiply();
+                    break;
+                case "/":
+                    _functionality.Divide();
                     break;
                 case "Swap":
                     if (_functionality.Stack.Count >= 2)
