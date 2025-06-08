@@ -1,10 +1,12 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform;
 using RpnCalc.Core;
+using RpnCalc.Exceptions;
 using RpnCalc.Logic;
 
 namespace BareboneAvaloniaApp;
@@ -24,6 +26,8 @@ public class MainWindow : Window
         Background = Brushes.Black;
         CanResize = false;
 
+        KeyDown += OnKeyDown;
+
         var mainPanel = new StackPanel
         {
             Orientation = Orientation.Vertical,
@@ -36,6 +40,35 @@ public class MainWindow : Window
         Content = mainPanel;
 
         _keypad.ButtonClicked += OnKeypadButtonClicked;
+    }
+
+    private void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        string? label = null;
+
+        if (e.Key is >= Key.D0 and <= Key.D9)
+            label = ((char)('0' + (e.Key - Key.D0))).ToString();
+        else
+        {
+            label = e.Key switch
+            {
+                Key.Decimal => ".",
+                Key.Add => "+",
+                Key.Subtract => "-",
+                Key.Multiply => "*",
+                Key.Divide => "/",
+                Key.Enter => "Enter",
+                Key.C => "Clear",
+                Key.S => "Swap",
+                _ => label
+            };
+        }
+
+        if (label != null)
+        {
+            OnKeypadButtonClicked(label);
+            e.Handled = true;
+        }
     }
 
     private void OnKeypadButtonClicked(string label)
