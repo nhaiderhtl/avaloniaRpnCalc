@@ -1,7 +1,11 @@
+using System.Security.Cryptography;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Themes.Fluent;
 
 namespace RpnCalc.Core;
 
@@ -11,6 +15,17 @@ public class Keypad : UserControl
 
     public Keypad()
     {
+        if (Application.Current?.Styles.OfType<FluentTheme>().FirstOrDefault() is FluentTheme fluent)
+        {
+            fluent.Resources["ButtonBackgroundPointerOver"] = Brushes.Gray;
+        }
+        
+        var mainPanel = new StackPanel
+        {
+            Orientation = Orientation.Vertical,
+            Margin = new Thickness(10),
+        };
+        
         var grid = new Grid
         {
             RowDefinitions = new RowDefinitions("*,*,*,*,*"),
@@ -40,7 +55,8 @@ public class Keypad : UserControl
                 {
                     Content = text,
                     FontFamily = new FontFamily("Consolas"),
-                    MinHeight = 40,
+                    Height = 40,
+                    Width = 55,
                     Padding = new Thickness(5),
                     Margin = new Thickness(5),
                     HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -54,12 +70,13 @@ public class Keypad : UserControl
 
                 button.PointerEntered += (_, __) =>
                 {
-                    button.Background = isOp ? Brushes.DarkOrange : Brushes.Gray;
                     button.RenderTransform = new ScaleTransform(1.1, 1.1);
                 };
+              
+              
+
                 button.PointerExited += (_, __) =>
                 {
-                    button.Background = isOp ? Brushes.Orange : Brushes.DarkGray;
                     button.RenderTransform = new ScaleTransform(1, 1);
                 };
 
@@ -72,6 +89,19 @@ public class Keypad : UserControl
             }
         }
 
-        Content = grid;
+        mainPanel.Children.Add(grid);
+        
+        var listInput = new TextBox
+        {
+            Margin = new Thickness(5),
+            Width = 280,
+            Height = 30,
+            Background = Brushes.Gray,
+            Foreground = Brushes.White,
+            Text = "enter list of numbers (e.g. [1 2 3] ): "
+        };
+        
+        mainPanel.Children.Add(listInput);
+        Content = mainPanel;
     }
 }

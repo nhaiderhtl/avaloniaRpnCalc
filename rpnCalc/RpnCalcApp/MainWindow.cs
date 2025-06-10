@@ -23,7 +23,7 @@ public class MainWindow : Window
     {
         Title = "RPN Calculator UI";
         Width = 300;
-        Height = 470;
+        Height = 550;
         Background = Brushes.Black;
         CanResize = false;
 

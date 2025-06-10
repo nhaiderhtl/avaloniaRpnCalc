@@ -27,4 +27,9 @@ public class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    public override void Initialize()
+    {
+        Styles.Add(new FluentTheme());
+    }
 }
