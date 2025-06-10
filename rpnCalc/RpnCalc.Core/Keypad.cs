@@ -93,7 +93,7 @@ public class Keypad : UserControl
 
         mainPanel.Children.Add(grid);
 
-        // TextBox with watermark for list input
+
         var listInput = new TextBox
         {
             Watermark = "Enter list of numbers (e.g. [1 2 3])",
