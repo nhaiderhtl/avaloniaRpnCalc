@@ -12,10 +12,10 @@ namespace RpnCalc.Core;
 public class Keypad : UserControl
 {
     public event Action<string>? ButtonClicked;
+    public TextBox ListInput { get; }
 
     public Keypad()
     {
-        // Update theme pointer-over style
         if (Application.Current?.Styles.OfType<FluentTheme>().FirstOrDefault() is FluentTheme fluent)
         {
             fluent.Resources["ButtonBackgroundPointerOver"] = Brushes.Gray;
@@ -27,7 +27,6 @@ public class Keypad : UserControl
             Margin = new Thickness(10),
         };
 
-        // Extend grid to include list operation buttons
         var grid = new Grid
         {
             RowDefinitions = new RowDefinitions("*,*,*,*,*,*"),
@@ -94,7 +93,7 @@ public class Keypad : UserControl
         mainPanel.Children.Add(grid);
 
 
-        var listInput = new TextBox
+        ListInput = new TextBox
         {
             Watermark = "Enter list of numbers (e.g. [1 2 3])",
             Margin = new Thickness(5),
@@ -104,7 +103,7 @@ public class Keypad : UserControl
             Foreground = Brushes.White,
         };
         
-        mainPanel.Children.Add(listInput);
+        mainPanel.Children.Add(ListInput);
         Content = mainPanel;
     }
 }

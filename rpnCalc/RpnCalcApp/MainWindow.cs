@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -18,6 +19,7 @@ public class MainWindow : Window
     private readonly Keypad _keypad = new();
     private string _currentInput = "";
     private readonly RpnBaseFunctionality _functionality = new();
+    private readonly ListFunctionality _listLogic = new();
 
     public MainWindow()
     {
@@ -59,21 +61,27 @@ public class MainWindow : Window
             Key.D9 or Key.NumPad9 => "9",
 
             Key.Decimal => ".",
-            
+
             Key.Add => "+",
             Key.Subtract => "-",
             Key.Multiply => "*",
             Key.Divide => "/",
-            
+
             Key.Enter => "Enter",
-            
+
             Key.C => "Clear",
             Key.S => "Swap",
 
             _ => null
         };
 
-        if (label != null)
+        if (e.Key == Key.OemComma && e.KeyModifiers == KeyModifiers.Shift)
+        {
+            OnKeypadButtonClicked(";");
+            e.Handled = true;
+        }
+
+        else if (label != null)
         {
             OnKeypadButtonClicked(label);
             e.Handled = true;
@@ -82,7 +90,7 @@ public class MainWindow : Window
 
     private void OnKeypadButtonClicked(string label)
     {
-        if (label.Length == 1 && (char.IsDigit(label[0]) || label[0] == '.'))
+        if (label.Length == 1 && (char.IsDigit(label[0]) || label[0] == '.' || label[0] == '[' || label[0] == ']'))
         {
             _currentInput += label;
             _display.SetInput(_currentInput);
@@ -93,6 +101,10 @@ public class MainWindow : Window
         {
             switch (label)
             {
+                case ";":
+                    _currentInput += "; ";
+                    _display.SetInput(_currentInput);
+                    break;
                 case "Enter":
                     if (double.TryParse(_currentInput, NumberStyles.Number, CultureInfo.InvariantCulture, out var val))
                         _functionality.Push(val);
@@ -126,6 +138,40 @@ public class MainWindow : Window
                     }
 
                     break;
+                case "Length":
+                {
+                    var list = ParseBracketList(_keypad.ListInput.Text);
+                    var len = _listLogic.Length(list);
+                    _display.SetInput(len.ToString());
+                    break;
+                }
+                case "Sum":
+                {
+                    var list = ParseBracketList(_keypad.ListInput.Text);
+                    var sum = _listLogic.Sum(list);
+                    _display.SetInput(sum.ToString(CultureInfo.InvariantCulture));
+                    break;
+                }
+                case "Avg":
+                {
+                    var list = ParseBracketList(_keypad.ListInput.Text);
+                    var avg = _listLogic.Average(list);
+                    _display.SetInput(avg.ToString(CultureInfo.InvariantCulture));
+                    break;
+                }
+                case "Map":
+                {
+                    // expecting format "[1 2 3] +2"
+                    var parts = _keypad.ListInput.Text.Split(']', StringSplitOptions.RemoveEmptyEntries);
+                    var rawList = parts[0] + "]";
+                    var op = parts.Length > 1
+                        ? parts[1].Trim()
+                        : throw new ArgumentException("Map needs an operation, e.g. [1 2 3] *3");
+                    var list = ParseBracketList(rawList);
+                    var mapped = _listLogic.Map(list, op);
+                    _display.SetInput("[" + string.Join(" ", mapped) + "]");
+                    break;
+                }
             }
         }
         catch (RpnException e)
@@ -139,6 +185,8 @@ public class MainWindow : Window
 
     private void RefreshDisplay()
     {
+
+        //TODO CANT PUSH LIST
         var items = _functionality.GetStackSnapshot();
         for (int i = 0; i < 5; i++)
         {
@@ -146,4 +194,32 @@ public class MainWindow : Window
             _display.SetLine(displayIndex, i < items.Length ? items[i].ToString(CultureInfo.InvariantCulture) : "");
         }
     }
+
+    private static List<double> ParseBracketList(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            throw new RpnInvalidBracketException("Input cannot be empty. Use format: [1 2 3].");
+
+        input = input.Trim();
+        if (!input.StartsWith("[") || !input.EndsWith("]"))
+            throw new RpnInvalidBracketException("List must start with ‘[’ and end with ‘]’.");
+
+        var inner = input.Substring(1, input.Length - 2).Trim();
+        if (inner == "")
+            return new List<double>();
+
+        var parts = inner.Split([';', '\t'], StringSplitOptions.RemoveEmptyEntries);
+        var result = new List<double>(parts.Length);
+
+        foreach (var token in parts)
+        {
+            if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
+                throw new RpnInvalidBracketException($"Could not parse ‘{token}’ as a number.");
+
+            result.Add(number);
+        }
+
+        return result;
+    }
+
 }

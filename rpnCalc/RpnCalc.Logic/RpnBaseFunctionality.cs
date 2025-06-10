@@ -12,6 +12,7 @@ public class RpnBaseFunctionality : IRpnCalculator
     {
         _stack.Push(value);
     }
+    //TODO LET IT BE ABLE TO PUSH A LIST
 
     public double Pop()
     {
