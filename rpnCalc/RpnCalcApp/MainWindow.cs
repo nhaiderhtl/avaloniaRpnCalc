@@ -25,7 +25,7 @@ public class MainWindow : Window
     {
         Title = "RPN Calculator UI";
         Width = 320;
-        Height = 550;
+        Height = 600;
         Background = Brushes.Black;
         CanResize = false;
 
@@ -47,6 +47,9 @@ public class MainWindow : Window
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
+        if (_keypad.TextboxIsFocused)
+            return;
+
         string? label = e.Key switch
         {
             Key.D0 or Key.NumPad0 => "0",
@@ -75,22 +78,14 @@ public class MainWindow : Window
             _ => null
         };
 
-        if (e.Key == Key.OemComma && e.KeyModifiers == KeyModifiers.Shift)
-        {
-            OnKeypadButtonClicked(";");
-            e.Handled = true;
-        }
-
-        else if (label != null)
-        {
-            OnKeypadButtonClicked(label);
-            e.Handled = true;
-        }
+        if (label == null) return;
+        OnKeypadButtonClicked(label);
+        e.Handled = true;
     }
 
     private void OnKeypadButtonClicked(string label)
     {
-        if (label.Length == 1 && (char.IsDigit(label[0]) || label[0] == '.' || label[0] == '[' || label[0] == ']'))
+        if (label.Length == 1 && (char.IsDigit(label[0]) || label[0] == '.'))
         {
             _currentInput += label;
             _display.SetInput(_currentInput);
@@ -101,10 +96,6 @@ public class MainWindow : Window
         {
             switch (label)
             {
-                case ";":
-                    _currentInput += "; ";
-                    _display.SetInput(_currentInput);
-                    break;
                 case "Enter":
                     if (double.TryParse(_currentInput, NumberStyles.Number, CultureInfo.InvariantCulture, out var val))
                         _functionality.Push(val);
@@ -139,39 +130,13 @@ public class MainWindow : Window
 
                     break;
                 case "Length":
-                {
-                    var list = ParseBracketList(_keypad.ListInput.Text);
-                    var len = _listLogic.Length(list);
-                    _display.SetInput(len.ToString());
-                    break;
-                }
                 case "Sum":
-                {
-                    var list = ParseBracketList(_keypad.ListInput.Text);
-                    var sum = _listLogic.Sum(list);
-                    _display.SetInput(sum.ToString(CultureInfo.InvariantCulture));
-                    break;
-                }
                 case "Avg":
-                {
-                    var list = ParseBracketList(_keypad.ListInput.Text);
-                    var avg = _listLogic.Average(list);
-                    _display.SetInput(avg.ToString(CultureInfo.InvariantCulture));
+                    HandleListButton(label);
                     break;
-                }
                 case "Map":
-                {
-                    // expecting format "[1 2 3] +2"
-                    var parts = _keypad.ListInput.Text.Split(']', StringSplitOptions.RemoveEmptyEntries);
-                    var rawList = parts[0] + "]";
-                    var op = parts.Length > 1
-                        ? parts[1].Trim()
-                        : throw new ArgumentException("Map needs an operation, e.g. [1 2 3] *3");
-                    var list = ParseBracketList(rawList);
-                    var mapped = _listLogic.Map(list, op);
-                    _display.SetInput("[" + string.Join(" ", mapped) + "]");
+                    HandleMap();
                     break;
-                }
             }
         }
         catch (RpnException e)
@@ -183,43 +148,54 @@ public class MainWindow : Window
         RefreshDisplay();
     }
 
+    private void HandleListButton(string action)
+    {
+        if (_keypad.ListInput.Text == null) return;
+        try
+        {
+            var list = _listLogic.ParseBracketList(_keypad.ListInput.Text);
+            var output = action switch
+            {
+                "Length" => _listLogic.Length(list).ToString(),
+                "Sum" => _listLogic.Sum(list).ToString(CultureInfo.InvariantCulture),
+                "Avg" => _listLogic.Average(list).ToString(CultureInfo.InvariantCulture)
+            };
+            _currentInput = output;
+            _display.SetInput(output);
+        }
+        catch (RpnException ex)
+        {
+            _display.SetInput(ex.Message);
+        }
+    }
+
+    private void HandleMap()
+    {
+        if (_keypad.ListInput.Text == null) return;
+        try
+        {
+            var txt = _keypad.ListInput.Text;
+            var parts = txt.Split(']', StringSplitOptions.RemoveEmptyEntries);
+            var raw = parts[0] + "]";
+            var op = parts.Length > 1
+                ? parts[1].Trim()
+                : throw new RpnInvalidBracketException("Map needs an operation,\ne.g. [1; 2; 3] +2");
+            var mapped = _listLogic.Map(_listLogic.ParseBracketList(raw), op);
+            _keypad.ListInput.Text = "[" + string.Join("; ", mapped) + "]";
+        }
+        catch (RpnException ex)
+        {
+            _display.SetInput(ex.Message);
+        }
+    }
+
     private void RefreshDisplay()
     {
-
-        //TODO CANT PUSH LIST
         var items = _functionality.GetStackSnapshot();
         for (int i = 0; i < 5; i++)
         {
-            int displayIndex = 4 - i;
+            var displayIndex = 4 - i;
             _display.SetLine(displayIndex, i < items.Length ? items[i].ToString(CultureInfo.InvariantCulture) : "");
         }
     }
-
-    private static List<double> ParseBracketList(string input)
-    {
-        if (string.IsNullOrWhiteSpace(input))
-            throw new RpnInvalidBracketException("Input cannot be empty. Use format: [1 2 3].");
-
-        input = input.Trim();
-        if (!input.StartsWith("[") || !input.EndsWith("]"))
-            throw new RpnInvalidBracketException("List must start with ‘[’ and end with ‘]’.");
-
-        var inner = input.Substring(1, input.Length - 2).Trim();
-        if (inner == "")
-            return new List<double>();
-
-        var parts = inner.Split([';', '\t'], StringSplitOptions.RemoveEmptyEntries);
-        var result = new List<double>(parts.Length);
-
-        foreach (var token in parts)
-        {
-            if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
-                throw new RpnInvalidBracketException($"Could not parse ‘{token}’ as a number.");
-
-            result.Add(number);
-        }
-
-        return result;
-    }
-
 }

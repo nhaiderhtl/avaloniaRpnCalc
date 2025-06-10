@@ -21,4 +21,11 @@ public interface IListFunctionality
     /// Applies a provided operation to each element and returns a new list of results.
     /// </summary>
     List<double> Map(List<double> list, string operation);
+
+    /// <summary>
+    /// Parses a string to a list of numbers
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    List<double> ParseBracketList(string input);
 }

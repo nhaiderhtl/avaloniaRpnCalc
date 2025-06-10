@@ -12,7 +12,6 @@ public class RpnBaseFunctionality : IRpnCalculator
     {
         _stack.Push(value);
     }
-    //TODO LET IT BE ABLE TO PUSH A LIST
 
     public double Pop()
     {
@@ -68,8 +67,8 @@ public class RpnBaseFunctionality : IRpnCalculator
         }
 
         var b = _stack.Pop();
-        var a = _stack.Pop();
         if (b == 0) throw new RpnDivisionByZeroException();
+        var a = _stack.Pop();
         _stack.Push(a / b);
     }
 

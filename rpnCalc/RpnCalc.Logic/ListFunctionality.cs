@@ -1,5 +1,6 @@
 using System.Globalization;
 using RpnCalc.Core;
+using RpnCalc.Exceptions;
 
 namespace RpnCalc.Logic;
 
@@ -51,7 +52,7 @@ public class ListFunctionality : IListFunctionality
                     break;
                 case '/':
                     if (value == 0)
-                        throw new DivideByZeroException("Cannot divide by zero.");
+                        throw new RpnDivisionByZeroException("Cannot divide by zero.");
                     transformed = x / value;
                     break;
                 default:
@@ -59,6 +60,33 @@ public class ListFunctionality : IListFunctionality
             }
 
             result.Add(transformed);
+        }
+
+        return result;
+    }
+
+    public List<double> ParseBracketList(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            throw new RpnInvalidBracketException("Input cannot be empty. Use format: [1 2 3].");
+
+        input = input.Trim();
+        if (!input.StartsWith("[") || !input.EndsWith("]"))
+            throw new RpnInvalidBracketException("List must start with ‘[’ and end with ‘]’.");
+
+        var inner = input.Substring(1, input.Length - 2).Trim();
+        if (inner == "")
+            return new List<double>();
+
+        var parts = inner.Split([';', '\t'], StringSplitOptions.RemoveEmptyEntries);
+        var result = new List<double>(parts.Length);
+
+        foreach (var token in parts)
+        {
+            if (!double.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out var number))
+                throw new RpnInvalidBracketException($"Could not parse ‘{token}’ as a number.");
+
+            result.Add(number);
         }
 
         return result;

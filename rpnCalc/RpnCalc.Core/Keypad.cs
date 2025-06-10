@@ -13,6 +13,7 @@ public class Keypad : UserControl
 {
     public event Action<string>? ButtonClicked;
     public TextBox ListInput { get; }
+    public bool TextboxIsFocused { get; private set; } = false;
 
     public Keypad()
     {
@@ -25,6 +26,7 @@ public class Keypad : UserControl
         {
             Orientation = Orientation.Vertical,
             Margin = new Thickness(10),
+            Height = 330
         };
 
         var grid = new Grid
@@ -39,7 +41,7 @@ public class Keypad : UserControl
             { "4", "5", "6", "*" },
             { "1", "2", "3", "-" },
             { "0", ".", "Enter", "+" },
-            { "Swap", "Clear", "[", "]" },
+            { "Swap", "Clear", "", "" },
             { "Length", "Sum", "Avg", "Map" }
         };
 
@@ -52,7 +54,7 @@ public class Keypad : UserControl
                     continue;
 
                 bool isOp = text is "/" or "*" or "-" or "+" or "Enter";
-                bool isListOp = text is "Length" or "Sum" or "Avg" or "Map" or "[" or "]";
+                bool isListOp = text is "Length" or "Sum" or "Avg" or "Map";
 
                 var button = new Button
                 {
@@ -72,15 +74,8 @@ public class Keypad : UserControl
                     RenderTransform = new ScaleTransform(1, 1)
                 };
 
-                button.PointerEntered += (_, __) =>
-                {
-                    button.RenderTransform = new ScaleTransform(1.1, 1.1);
-                };
-
-                button.PointerExited += (_, __) =>
-                {
-                    button.RenderTransform = new ScaleTransform(1, 1);
-                };
+                button.PointerEntered += (_, __) => button.RenderTransform = new ScaleTransform(1.1, 1.1);
+                button.PointerExited += (_, __) => button.RenderTransform = new ScaleTransform(1, 1);
 
                 button.Click += (_, __) => ButtonClicked?.Invoke(text);
 
@@ -95,13 +90,16 @@ public class Keypad : UserControl
 
         ListInput = new TextBox
         {
-            Watermark = "Enter list of numbers (e.g. [1 2 3])",
+            Watermark = "Enter list of numbers (e.g. [1; 2; 3])",
             Margin = new Thickness(5),
             Width = 280,
             Height = 30,
             Background = Brushes.Gray,
             Foreground = Brushes.White,
         };
+
+        ListInput.GotFocus += (_, __) => TextboxIsFocused = true;
+        ListInput.LostFocus += (_, __) => TextboxIsFocused = false;
         
         mainPanel.Children.Add(ListInput);
         Content = mainPanel;

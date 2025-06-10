@@ -84,7 +84,7 @@ public class StackDisplay : UserControl
             BorderBrush = Brushes.Black,
             BorderThickness = new Thickness(2),
             Child = panel,
-            Height = 220
+            Height = 225
         };
     }
 
