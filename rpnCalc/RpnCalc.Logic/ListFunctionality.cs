@@ -1,3 +1,4 @@
+using System.Globalization;
 using RpnCalc.Core;
 
 namespace RpnCalc.Logic;
@@ -30,7 +31,7 @@ public class ListFunctionality : IListFunctionality
             throw new ArgumentException("Operation must be like '+N', '-N', '*N' or '/N'.", nameof(operation));
 
         var op = operation[0];
-        if (!double.TryParse(operation.AsSpan(1), out var value))
+        if (!double.TryParse(operation.AsSpan(1), NumberStyles.Float, CultureInfo.InvariantCulture, out var value))
             throw new ArgumentException("Could not parse number after operator.", nameof(operation));
 
         var result = new List<double>(list.Count);
