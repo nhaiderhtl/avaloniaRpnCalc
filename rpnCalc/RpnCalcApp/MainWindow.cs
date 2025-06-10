@@ -2,6 +2,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -26,7 +27,7 @@ public class MainWindow : Window
         Background = Brushes.Black;
         CanResize = false;
 
-        KeyDown += OnKeyDown;
+        AddHandler(KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
 
         var mainPanel = new StackPanel
         {
@@ -44,25 +45,33 @@ public class MainWindow : Window
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        string? label = null;
-
-        if (e.Key is >= Key.D0 and <= Key.D9)
-            label = ((char)('0' + (e.Key - Key.D0))).ToString();
-        else
+        string? label = e.Key switch
         {
-            label = e.Key switch
-            {
-                Key.Decimal => ".",
-                Key.Add => "+",
-                Key.Subtract => "-",
-                Key.Multiply => "*",
-                Key.Divide => "/",
-                Key.Enter => "Enter",
-                Key.C => "Clear",
-                Key.S => "Swap",
-                _ => label
-            };
-        }
+            Key.D0 or Key.NumPad0 => "0",
+            Key.D1 or Key.NumPad1 => "1",
+            Key.D2 or Key.NumPad2 => "2",
+            Key.D3 or Key.NumPad3 => "3",
+            Key.D4 or Key.NumPad4 => "4",
+            Key.D5 or Key.NumPad5 => "5",
+            Key.D6 or Key.NumPad6 => "6",
+            Key.D7 or Key.NumPad7 => "7",
+            Key.D8 or Key.NumPad8 => "8",
+            Key.D9 or Key.NumPad9 => "9",
+
+            Key.Decimal => ".",
+            
+            Key.Add => "+",
+            Key.Subtract => "-",
+            Key.Multiply => "*",
+            Key.Divide => "/",
+            
+            Key.Enter => "Enter",
+            
+            Key.C => "Clear",
+            Key.S => "Swap",
+
+            _ => null
+        };
 
         if (label != null)
         {
