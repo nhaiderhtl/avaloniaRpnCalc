@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -15,21 +15,23 @@ public class Keypad : UserControl
 
     public Keypad()
     {
+        // Update theme pointer-over style
         if (Application.Current?.Styles.OfType<FluentTheme>().FirstOrDefault() is FluentTheme fluent)
         {
             fluent.Resources["ButtonBackgroundPointerOver"] = Brushes.Gray;
         }
-        
+
         var mainPanel = new StackPanel
         {
             Orientation = Orientation.Vertical,
             Margin = new Thickness(10),
         };
-        
+
+        // Extend grid to include list operation buttons
         var grid = new Grid
         {
-            RowDefinitions = new RowDefinitions("*,*,*,*,*"),
-            ColumnDefinitions = new ColumnDefinitions("*,*,*,*")
+            RowDefinitions = new RowDefinitions("*,*,*,*,*,*"),
+            ColumnDefinitions = new ColumnDefinitions("*,*,*,*"),
         };
 
         string[,] labels =
@@ -38,30 +40,33 @@ public class Keypad : UserControl
             { "4", "5", "6", "*" },
             { "1", "2", "3", "-" },
             { "0", ".", "Enter", "+" },
-            { "Swap", "Clear", "", "" }
+            { "Swap", "Clear", "[", "]" },
+            { "Length", "Sum", "Avg", "Map" }
         };
 
-        for (int row = 0; row < 5; row++)
+        for (int row = 0; row < labels.GetLength(0); row++)
         {
-            for (int col = 0; col < 4; col++)
+            for (int col = 0; col < labels.GetLength(1); col++)
             {
                 var text = labels[row, col];
                 if (string.IsNullOrEmpty(text))
                     continue;
 
-                bool isOp = text is "/" or "*" or "-" or "+";
+                bool isOp = text is "/" or "*" or "-" or "+" or "Enter";
+                bool isListOp = text is "Length" or "Sum" or "Avg" or "Map" or "[" or "]";
 
                 var button = new Button
                 {
                     Content = text,
                     FontFamily = new FontFamily("Consolas"),
                     Height = 40,
-                    Width = 55,
+                    Width = 60,
                     Padding = new Thickness(5),
                     Margin = new Thickness(5),
                     HorizontalContentAlignment = HorizontalAlignment.Center,
                     VerticalContentAlignment = VerticalAlignment.Center,
-                    Background = isOp ? Brushes.Orange : Brushes.DarkGray,
+                    Background = isOp ? Brushes.Orange : isListOp ? Brushes.SteelBlue : Brushes.DarkGray,
+                    Foreground = Brushes.White,
                     BorderBrush = Brushes.DimGray,
                     BorderThickness = new Thickness(0, 0, 2, 2),
                     RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
@@ -72,16 +77,13 @@ public class Keypad : UserControl
                 {
                     button.RenderTransform = new ScaleTransform(1.1, 1.1);
                 };
-              
-              
 
                 button.PointerExited += (_, __) =>
                 {
                     button.RenderTransform = new ScaleTransform(1, 1);
                 };
 
-                button.Click += (_, __) => { ButtonClicked?.Invoke(text); };
-
+                button.Click += (_, __) => ButtonClicked?.Invoke(text);
 
                 Grid.SetRow(button, row);
                 Grid.SetColumn(button, col);
@@ -90,15 +92,16 @@ public class Keypad : UserControl
         }
 
         mainPanel.Children.Add(grid);
-        
+
+        // TextBox with watermark for list input
         var listInput = new TextBox
         {
+            Watermark = "Enter list of numbers (e.g. [1 2 3])",
             Margin = new Thickness(5),
             Width = 280,
             Height = 30,
             Background = Brushes.Gray,
             Foreground = Brushes.White,
-            Text = "enter list of numbers (e.g. [1 2 3] ): "
         };
         
         mainPanel.Children.Add(listInput);
