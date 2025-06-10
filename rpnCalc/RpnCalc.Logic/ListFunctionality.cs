@@ -78,7 +78,7 @@ public class ListFunctionality : IListFunctionality
         if (inner == "")
             return new List<double>();
 
-        var parts = inner.Split([';', '\t'], StringSplitOptions.RemoveEmptyEntries);
+        var parts = inner.Split([';', ' '], StringSplitOptions.RemoveEmptyEntries);
         var result = new List<double>(parts.Length);
 
         foreach (var token in parts)

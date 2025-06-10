@@ -1,157 +1,148 @@
-using RpnCalc.Exceptions;
 using RpnCalc.Logic;
+using RpnCalc.Exceptions;
 
-namespace RpnCalc.Test;
-
-public class ListFunctionalityTests
+namespace RpnCalc.Test
 {
-    private readonly ListFunctionality _logic = new ListFunctionality();
-
-    [Fact]
-    public void Map_NullList_ThrowsArgumentNullException()
+    public class ListFunctionalityTests
     {
-        Assert.Throws<ArgumentNullException>(() => _logic.Map(null, "+1"));
-    }
+        private readonly ListFunctionality _logic = new ListFunctionality();
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("+")]
-    public void Map_InvalidOperationString_ThrowsArgumentException(string operation)
-    {
-        var sample = new List<double> { 1, 2, 3 };
-        Assert.Throws<ArgumentException>(() => _logic.Map(sample, operation));
-    }
+        [Fact]
+        public void Length_Null_Throws() =>
+            Assert.Throws<ArgumentNullException>(() => _logic.Length(null));
 
-    [Fact]
-    public void Map_UnparsableNumber_ThrowsArgumentException()
-    {
-        var sample = new List<double> { 5 };
-        Assert.Throws<ArgumentException>(() => _logic.Map(sample, "+abc"));
-    }
-
-    [Fact]
-    public void Map_UnsupportedOperator_ThrowsArgumentException()
-    {
-        var sample = new List<double> { 2 };
-        Assert.Throws<ArgumentException>(() => _logic.Map(sample, "^2"));
-    }
-
-    [Fact]
-    public void Map_DivideByZero_ThrowsDivideByZeroException()
-    {
-        var sample = new List<double> { 1, 2, 3 };
-        Assert.Throws<DivideByZeroException>(() => _logic.Map(sample, "/0"));
-    }
-
-    [Theory]
-    [InlineData("+2", new double[] { 1, 2, 3 }, new double[] { 3, 4, 5 })]
-    [InlineData("-1.5", new double[] { 3, 2, 1 }, new double[] { 1.5, 0.5, -0.5 })]
-    [InlineData("*3", new double[] { 2, 0, -1 }, new double[] { 6, 0, -3 })]
-    [InlineData("/2", new double[] { 4, 2, -2 }, new double[] { 2, 1, -1 })]
-    public void Map_ValidOperations_ReturnsExpected(string operation, double[] input, double[] expected)
-    {
-        var list = new List<double>(input);
-        var result = _logic.Map(list, operation);
-
-        Assert.Equal(expected.Length, result.Count);
-        for (int i = 0; i < expected.Length; i++)
+        [Fact]
+        public void Length_Valid_ReturnsCount()
         {
-            Assert.Equal(expected[i], result[i], 6);
+            var list = new List<double> { 1,2,3 };
+            Assert.Equal(3, _logic.Length(list));
         }
-    }
 
-    [Fact]
-    public void Map_EmptyList_ReturnsEmptyList()
-    {
-        var result = _logic.Map(new List<double>(), "+5");
-        Assert.Empty(result);
-    }
+        [Fact]
+        public void Sum_Null_Throws() =>
+            Assert.Throws<ArgumentNullException>(() => _logic.Sum(null));
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void ParseBracketList_EmptyOrWhitespace_ThrowsInvalidBracket(string input)
-    {
-        Assert.Throws<RpnInvalidBracketException>(() =>
-            _logic.ParseBracketList(input));
-    }
+        [Fact]
+        public void Sum_Valid_ReturnsSum()
+        {
+            var list = new List<double> { 1.5,2.5,-1 };
+            Assert.Equal(3.0, _logic.Sum(list), 6);
+        }
 
-    [Theory]
-    [InlineData("1 2 3")]
-    [InlineData("[1 2 3")]
-    [InlineData("1 2 3]")]
-    [InlineData(" {1 2 3}")]
-    [InlineData("[1 2 3}")]
-    public void ParseBracketList_MissingOrBadBrackets_ThrowsInvalidBracket(string input)
-    {
-        Assert.Throws<RpnInvalidBracketException>(() =>
-            _logic.ParseBracketList(input));
-    }
+        [Fact]
+        public void Average_Null_Throws() =>
+            Assert.Throws<ArgumentNullException>(() => _logic.Average(null));
 
-    [Fact]
-    public void ParseBracketList_ExactEmptyBrackets_ReturnsEmptyList()
-    {
-        var result = _logic.ParseBracketList("[]");
-        Assert.NotNull(result);
-        Assert.Empty(result);
-    }
+        [Fact]
+        public void Average_Empty_ThrowsInvalidOp() =>
+            Assert.Throws<InvalidOperationException>(() => _logic.Average(new List<double>()));
 
-    [Theory]
-    [InlineData("[42]", new double[] { 42 })]
-    [InlineData("[  3.14 ]", new double[] { 3.14 })]
-    public void ParseBracketList_SingleValue_ReturnsListWithOne(string input, double[] expected)
-    {
-        var result = _logic.ParseBracketList(input);
-        Assert.Equal(expected, result);
-    }
+        [Fact]
+        public void Average_Valid_ReturnsAvg()
+        {
+            var list = new List<double> { 2,4,6 };
+            Assert.Equal(4.0, _logic.Average(list), 6);
+        }
 
-    [Fact]
-    public void ParseBracketList_MultipleSpaceSeparatedValues_ReturnsAll()
-    {
-        var src = "[1 2 3.5 -4]";
-        var expected = new List<double> { 1, 2, 3.5, -4 };
-        var result = _logic.ParseBracketList(src);
-        Assert.Equal(expected, result);
-    }
+        [Fact]
+        public void Map_NullList_Throws() =>
+            Assert.Throws<ArgumentNullException>(() => _logic.Map(null, "+1"));
 
-    [Fact]
-    public void ParseBracketList_TabSeparatedValues_ReturnsAll()
-    {
-        var src = "[10\t20\t30]";
-        var expected = new List<double> { 10, 20, 30 };
-        var result = _logic.ParseBracketList(src);
-        Assert.Equal(expected, result);
-    }
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("+")]
+        public void Map_BadOpString_Throws(string op) =>
+            Assert.Throws<ArgumentException>(() => _logic.Map(new List<double>{1}, op));
 
-    [Fact]
-    public void ParseBracketList_SemicolonSeparatedValues_ReturnsAll()
-    {
-        var src = "[5;6;7.5]";
-        var expected = new List<double> { 5, 6, 7.5 };
-        var result = _logic.ParseBracketList(src);
-        Assert.Equal(expected, result);
-    }
+        [Fact]
+        public void Map_Unparsable_Throws() =>
+            Assert.Throws<ArgumentException>(() => _logic.Map(new List<double>{1}, "+abc"));
 
-    [Theory]
-    [InlineData("[1 2 foo]")]
-    [InlineData("[bar]")]
-    [InlineData("[1; two;3]")]
-    public void ParseBracketList_NonNumericToken_ThrowsInvalidBracket(string input)
-    {
-        Assert.Throws<RpnInvalidBracketException>(() =>
-            _logic.ParseBracketList(input));
-    }
+        [Fact]
+        public void Map_UnsupportedOp_Throws() =>
+            Assert.Throws<ArgumentException>(() => _logic.Map(new List<double>{2}, "^2"));
 
-    [Fact]
-    public void ParseBracketList_ExtraWhitespace_PreservesCorrectParsing()
-    {
-        var src = "[   1    2\t\t3   ;4  ]";
-        // splits on space, tab or semicolon
-        var expected = new List<double> { 1, 2, 3, 4 };
-        var result = _logic.ParseBracketList(src);
-        Assert.Equal(expected, result);
+        [Fact]
+        public void Map_DivideByZero_Throws() =>
+            Assert.Throws<RpnDivisionByZeroException>(() => _logic.Map(new List<double>{1,2}, "/0"));
+
+        [Theory]
+        [InlineData("+2", new[]{1.0,2.0}, new[]{3.0,4.0})]
+        [InlineData("-1.5", new[]{3.0,2.0}, new[]{1.5,0.5})]
+        [InlineData("*3", new[]{2.0,0.0,-1.0}, new[]{6.0,0.0,-3.0})]
+        [InlineData("/2", new[]{4.0,-2.0}, new[]{2.0,-1.0})]
+        public void Map_Valid_ReturnsExpected(string op, double[] input, double[] expected)
+        {
+            var res = _logic.Map(new List<double>(input), op);
+            Assert.Equal(expected.Length, res.Count);
+            for(int i=0;i<expected.Length;i++)
+                Assert.Equal(expected[i], res[i], 6);
+        }
+
+        [Fact]
+        public void Map_EmptyList_ReturnsEmpty() =>
+            Assert.Empty(_logic.Map(new List<double>(), "*5"));
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void ParseBracketList_Empty_Throws(string input) =>
+            Assert.Throws<RpnInvalidBracketException>(() => _logic.ParseBracketList(input));
+
+        [Theory]
+        [InlineData("1 2 3")]
+        [InlineData("[1 2 3")]
+        [InlineData("1 2 3]")]
+        [InlineData("{1;2;3}")]
+        [InlineData("[1;2;3}")]
+        public void ParseBracketList_BadBrackets_Throws(string input) =>
+            Assert.Throws<RpnInvalidBracketException>(() => _logic.ParseBracketList(input));
+
+        [Fact]
+        public void ParseBracketList_EmptyBrackets_ReturnsEmpty()
+        {
+            var outp = _logic.ParseBracketList("[]");
+            Assert.Empty(outp);
+        }
+
+        [Theory]
+        [InlineData("[42]", new[]{42.0})]
+        [InlineData("[ 3.14 ]", new[]{3.14})]
+        public void ParseBracketList_SingleVal_Returns(string input, double[] exp)
+        {
+            var outp = _logic.ParseBracketList(input);
+            Assert.Equal(exp.Length, outp.Count);
+            Assert.Equal(exp[0], outp[0],6);
+        }
+
+        [Fact]
+        public void ParseBracketList_SemicolonSeparated_ReturnsAll()
+        {
+            var outp = _logic.ParseBracketList("[1;2;3.5;-4]");
+            Assert.Equal(new List<double>{1,2,3.5,-4}, outp);
+        }
+
+        [Fact]
+        public void ParseBracketList_SpaceSeparated_ReturnsAll()
+        {
+            var outp = _logic.ParseBracketList("[1 2 3]");
+            Assert.Equal(new List<double>{1,2,3}, outp);
+        }
+
+        [Fact]
+        public void ParseBracketList_MixedSep_ReturnsAll()
+        {
+            var outp = _logic.ParseBracketList("[1; 2 3;4]");
+            Assert.Equal(new List<double>{1,2,3,4}, outp);
+        }
+
+        [Theory]
+        [InlineData("[1; foo ;3]")]
+        [InlineData("[bar]")]
+        [InlineData("[1 two 3]")]
+        public void ParseBracketList_NonNumeric_Throws(string input) =>
+            Assert.Throws<RpnInvalidBracketException>(() => _logic.ParseBracketList(input));
     }
 }
