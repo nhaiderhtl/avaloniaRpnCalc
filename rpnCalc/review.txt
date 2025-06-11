@@ -1,0 +1,29 @@
+Gesamt: 90 (SG)
+
+- Gute Idee User Controls zu verwenden!
+- In Core sollen keine UI Elemente verwendet werden (besprechen wir erst)
+
+(40 nng, 49 ng, 50 g, 56, 63 B, 69, 75 G, 81, 88 SG, 94)
+
+-. (20) uisketch
+  -(10) Termintreue (23.05.25)
+  -(10) Funktionalität: UI
+-. (50) rpnsimple (28.05.25)
+  -(10) Termintreue
+  -(10) Funktionalität
+  -(20) Unit Tests
+  -(10) Tastaturbedienung
+-(30) rpnplot (10.06.25)
+  -(10) Termintreue
+  -(15) Funktionalität (10 plot, 5 Achsenticks)
+  -(5) Polynom in richtiger Reihenfolge?
+-20 (30) rpnlist (10.06.25)
+  -(10) Termintreue
+  --10 (20) Funktionalität (Len, Sum, Avg, Map, Polyplot) (nicht in Stack-UI integriert)
+
+Abzüge:
+- Binaries in einem der Abgabebranches: -10
+- Gar keine Unit Tests: -30
+- Smells too much like ChatGPT: -20
+- Sehr seltsame Code-Konstrukte oder Stil: -10
+- Projektstruktur nicht eingehalten: -10
